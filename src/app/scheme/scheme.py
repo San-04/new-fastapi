@@ -6,6 +6,7 @@ class schemeLogin(BaseModel):
 
 
 class schemeCreatedUser(BaseModel):
+    token: str
     firtName: str
     lastName: str
     email: str
