@@ -1,17 +1,21 @@
-from src.app.module.user.sql_user import sqlUser
+from src.app.module.user.sql_user import SqlUser
 from src.app.core.security import get_password_hash
 from fastapi.responses import JSONResponse
 
-class user: 
-    def createdUser(data):
+class User: 
+
+    def __init__(self):
+        self.user_sql = SqlUser()
+
+    def createdUser(self, data):
         try:
             if data.firtName and data.lastName and data.email and data.password and data.age:
-                if not sqlUser.getEmailUser(data.email):
+                if not self.user_sql.getEmailUser(data.email):
                     dataUser = data.dict()
                     password = get_password_hash(data.password)
                     dataUser['password'] = password
                     print("name", dataUser)
-                    sqlCreated = sqlUser.sqlCreatedUser(dataUser)
+                    sqlCreated = self.user_sql.sqlCreatedUser(dataUser)
                     print("holis result", sqlCreated)
                     if not sqlCreated:
                         return JSONResponse(content="error created user", status_code=400)

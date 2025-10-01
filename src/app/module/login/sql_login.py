@@ -1,9 +1,12 @@
-from src.app.database.db import dataBase
+from src.app.database.db import Database
 
 
-class sqlLogin:
-    def get_user(email):
-        sql = """SELECT password FROM usuarios WHERE email = %s"""
-        values = (email, )
-        result = dataBase.mysqlExecute(sql, db="tienda_plus", values=values, fetch=True)
+class SqlLogin:
+
+    def __init__(self):
+        self.dataBase = Database()
+
+    def get_user(self, email):
+        sql = f"""SELECT password FROM usuarios WHERE email = '{email}'"""
+        result = self.dataBase.mysqlExecute(sql, 'tienda_plus')
         return result

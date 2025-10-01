@@ -1,10 +1,14 @@
-from src.app.module.login.sql_login import sqlLogin
+from src.app.module.login.sql_login import SqlLogin
 from src.app.core.security import verify_password, create_access_token
 from fastapi.responses import JSONResponse
 
-class login:
-    def start_login(data):
-        passwordUser = sqlLogin.get_user(data.email)
+class Login:
+
+    def __init__(self):
+        self.loginSql = SqlLogin()
+
+    def start_login(self, data):
+        passwordUser = self.loginSql.get_user(data.email)
         if passwordUser:
             hashedPassword = passwordUser[0]['password']
             verifyPassword = verify_password(data.password, hashedPassword)

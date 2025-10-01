@@ -1,18 +1,25 @@
-from src.app.database.db import dataBase
+from src.app.database.db import Database
 
-class sqlUser:
-    def sqlCreatedUser(data):
-        sql = """INSERT INTO usuarios (nombre, apellido, email, password, edad) 
-                VALUES (%s, %s, %s, %s, %s)"""
-        
-        values = ( data['firtName'], data['lastName'], data['email'], data['password'], data['age'] )
+class SqlUser:
 
-        result = dataBase.mysqlExecute(sql, 'tienda_plus', values=values)
-        return result
+    def __init__(self):
+        self.database = Database()
+
+    def sqlCreatedUser(self, data):
+        try:
+            sql = f"""INSERT INTO usuarios (nombre, apellido, email, password, edad) 
+                VALUES '{data['firtName']}', '{data['lastName']}', '{data['email']}', '{data['password']}', '{data['age']}')
+            """
+            result = self.database.msqlExecuteInsert(sql, 'tienda_plus',)
+            return result
+        except Exception as e:
+            print("SqlUser/sqlCreatedUser" + str(e))
     
-    def getEmailUser(email):
-        sql = """SELECT email FROM usuarios WHERE email = %s"""
-        values = (email,)
-        result = dataBase.mysqlExecute(sql, db="tienda_plus", values=values, fetch=True)
-        return result
+    def getEmailUser(self, email):
+        try:
+            sql = f"""SELECT email FROM usuarios WHERE email = '{email}'"""
+            result = self.database.mysqlExecute(sql, db="tienda_plus")
+            return result
+        except Exception as e:
+            print("SqlUser/getEmailUser" + str(e))
 
