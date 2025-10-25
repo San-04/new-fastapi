@@ -6,12 +6,10 @@ from src.app.core.config import Settings
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def get_password_hash(password: str) -> str:
-    settings = Settings()
-    return pwd_context.hash(password + settings.MESSENG_KEY)
+    return pwd_context.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    settings = Settings()
-    return pwd_context.verify(plain_password + settings.MESSENG_KEY, hashed_password)
+    return pwd_context.verify(plain_password, hashed_password)
 
 def create_access_token(data: dict) -> str:
     settings = Settings()

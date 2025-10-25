@@ -63,7 +63,7 @@ class Database:
             conn = self.conexion(db)
             cur = conn.cursor(dictionary=True)
             cur.execute(sql)
-            return [cur.fetchall()]
+            return cur.fetchall()
         except Exception as e:
             print("Database/mysqlExecute" + str(e))
         finally:

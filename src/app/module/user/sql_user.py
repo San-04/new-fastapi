@@ -7,8 +7,8 @@ class SqlUser:
 
     def sqlCreatedUser(self, data):
         try:
-            sql = f"""INSERT INTO usuarios (nombre, apellido, email, password, edad) 
-                VALUES '{data['firtName']}', '{data['lastName']}', '{data['email']}', '{data['password']}', '{data['age']}')
+            sql = f"""INSERT INTO usuarios (nombre, apellido, email, password, edad)
+                VALUES ('{data['firtName']}', '{data['lastName']}', '{data['email']}', '{data['password']}', '{data['age']}')
             """
             result = self.database.msqlExecuteInsert(sql, 'tienda_plus',)
             return result
