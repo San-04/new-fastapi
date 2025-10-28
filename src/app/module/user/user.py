@@ -14,9 +14,7 @@ class User:
                     dataUser = data.dict()
                     password = get_password_hash(data.password)
                     dataUser['password'] = password
-                    print("name", dataUser)
                     sqlCreated = self.user_sql.sqlCreatedUser(dataUser)
-                    print("holis result", sqlCreated)
                     if not sqlCreated:
                         return JSONResponse(content="error created user", status_code=400)
                     return JSONResponse(content="created user", status_code=200)
@@ -25,5 +23,5 @@ class User:
             else: 
                 return JSONResponse(content="missing parameters", status_code=200)
         except Exception as e:
-            print("error created user", e)
+            print("Error created user:", e)
             return JSONResponse(content="error created user", status_code=400)

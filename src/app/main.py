@@ -3,6 +3,6 @@ from src.app.routers.user import user
 from fastapi import FastAPI
 
 app = FastAPI()
-app.include_router(login.appLogin, tags=["Login"])
-app.include_router(user.appUser, tags=["User"])
+app.include_router(login.appLogin)
+app.include_router(user.appUser)
 
