@@ -13,3 +13,10 @@ async def createdUser(
     user = User()
     result = user.createdUser(data)
     return result
+
+@appUser.get("/get_users")
+async def getUsers(
+    current_user=Depends(getCurrentUser)
+):
+    user = User()
+    return user.getUsers()

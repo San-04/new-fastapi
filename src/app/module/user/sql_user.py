@@ -22,4 +22,14 @@ class SqlUser:
             return result
         except Exception as e:
             print("SqlUser/getEmailUser" + str(e))
+    
+    def getListUsers(self):
+        try:
+            sql = f"""
+                SELECT * FROM usuarios;
+            """
+            result = self.database.mysqlExecutePaginated(sql, db="tienda_plus")
+            return result
+        except Exception as e:
+            print("SqlUser/getListUsers" + str(e))    
 
