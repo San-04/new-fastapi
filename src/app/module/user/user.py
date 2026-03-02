@@ -1,43 +1,56 @@
+"""User service module for handling user-related operations."""
+
+from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 from src.app.module.user.sql_user import SqlUser
 from src.app.core.security import get_password_hash
-from fastapi.responses import JSONResponse
 
-class User: 
+class User:
+    """Service class for handling user-related operations."""
 
     def __init__(self):
-        self.userSql = SqlUser()
+        self.user_sql = SqlUser()
 
-    def createdUser(self, data):
+    def created_user(self, data):
+        """
+        Create a new user in the database.
+        
+        Validates required fields, checks for duplicate emails, hashes the password,
+        and inserts the user record into the database.
+        """
         try:
-            if data.firtName and data.lastName and data.email and data.password and data.age:
-                if not self.userSql.getEmailUser(data.email):
-                    dataUser = data.dict()
+            if data.firstName and data.lastName and data.email and data.password and data.age:
+                if not self.user_sql.get_email_user(data.email):
+                    data_user = data.dict()
                     password = get_password_hash(data.password)
-                    dataUser['password'] = password
-                    sqlCreated = self.userSql.sqlCreatedUser(dataUser)
-                    if not sqlCreated:
+                    data_user['password'] = password
+                    sql_created = self.user_sql.sql_created_user(data_user)
+                    if not sql_created:
                         return JSONResponse(content="Error Created User", status_code=400)
                     return JSONResponse(content="Created User", status_code=200)
-                else:
-                    return JSONResponse(content="Duplicate Email", status_code=200)
-            else: 
-                return JSONResponse(content="Missing Parameters", status_code=200)
+                return JSONResponse(content="Duplicate Email", status_code=200)
+            return JSONResponse(content="Missing Parameters", status_code=200)
         except Exception as e:
             print("Error created user:" + str(e))
-            return JSONResponse(content="Error Created User", status_code=400)
+            raise HTTPException(status_code=500, detail="Error Created User") from e
+
+    def get_users(self):
+        """
+        Retrieve all users from the database.
         
-    def getUsers(self):
+        Fetches the complete user list and removes sensitive information (passwords).
+        Converts fecha_nacimiento field to string format.
+        """
         try:
-            usersList = []
-            gettUsers = self.userSql.getListUsers() 
-            if gettUsers:
-                for value in gettUsers:
-                    value['fechaNacimiento'] = str(value['fechaNacimiento'])
-                    value.pop("password", None)
-                    usersList.append(value)
-                return JSONResponse(content=usersList, status_code=200)
-            else:
-                return JSONResponse(content="No Data", status_code=200)
+            users_list = []
+            get_users = self.user_sql.get_list_users()
+            for value in get_users:
+                value['fechaNacimiento'] = str(value['fechaNacimiento'])
+                value.pop("password", None)
+                users_list.append(value)
+            if users_list:
+                return JSONResponse(content=users_list, status_code=200)
+            return JSONResponse(content="No Data", status_code=200)
         except Exception as e:
-            print("User/getUsers: " + str(e))
-            return JSONResponse(content="Error Get Users", status_code=400)
+            print("User/get_users: " + str(e))
+            raise HTTPException(status_code=400, detail="Error Get Users") from e

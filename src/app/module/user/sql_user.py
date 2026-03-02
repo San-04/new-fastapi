@@ -1,35 +1,41 @@
+"""Database layer for user-related queries."""
+
 from src.app.database.db import Database
 
 class SqlUser:
+    """Database layer for user-related queries."""
 
     def __init__(self):
-        self.database = Database()
+        self.data_base = Database()
 
-    def sqlCreatedUser(self, data):
-        try:
-            sql = f"""INSERT INTO usuarios (nombre, apellido, email, password, edad)
-                VALUES ('{data['firtName']}', '{data['lastName']}', '{data['email']}', '{data['password']}', '{data['age']}')
-            """
-            result = self.database.msqlExecuteInsert(sql, 'tienda_plus',)
-            return result
-        except Exception as e:
-            print("SqlUser/sqlCreatedUser" + str(e))
-    
-    def getEmailUser(self, email):
-        try:
-            sql = f"""SELECT email FROM usuarios WHERE email = '{email}'"""
-            result = self.database.mysqlExecute(sql, db="tienda_plus")
-            return result
-        except Exception as e:
-            print("SqlUser/getEmailUser" + str(e))
-    
-    def getListUsers(self):
-        try:
-            sql = f"""
-                SELECT * FROM usuarios;
-            """
-            result = self.database.mysqlExecutePaginated(sql, db="tienda_plus")
-            return result
-        except Exception as e:
-            print("SqlUser/getListUsers" + str(e))    
+    def sql_created_user(self, data):
+        """
+        Insert a new user record into the database.
+        
+        Creates a new user entry in the usuario table with provided information.
+        """
+        sql = f"""INSERT INTO usuario (nombre, apellido, email, password, edad)
+            VALUES ('{data['firstName']}', '{data['lastName']}', '{data['email']}',
+            '{data['password']}', '{data['age']}')
+        """
+        result = self.data_base.msql_execute_insert(sql, 'tienda_plus',)
+        return result
 
+    def get_email_user(self, email):
+        """
+        Check if a user with the given email exists in the database.
+        """
+        sql = f"""SELECT email FROM usuario WHERE email = '{email}'"""
+        result = self.data_base.mysql_execute(sql, db="tienda_plus")
+        return result
+
+    def get_list_users(self):
+        """
+        Retrieve all user records from the database with pagination support.
+        
+        Fetches complete user information from the usuario table.
+        Results are yielded for efficient memory usage with large datasets.
+        """
+        sql = """SELECT * FROM usuario"""
+        result = self.data_base.mysql_execute_paginated(sql, db="tienda_plus")
+        return result
