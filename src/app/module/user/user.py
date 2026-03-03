@@ -19,7 +19,11 @@ class User:
         and inserts the user record into the database.
         """
         try:
-            if data.firstName and data.lastName and data.email and data.password and data.age:
+            required = [
+                "firstName", "lastName", "email", "password",
+                "age", "dateBirth", "role_id"
+            ]
+            if all(getattr(data, f) for f in required):
                 if not self.user_sql.get_email_user(data.email):
                     data_user = data.dict()
                     password = get_password_hash(data.password)
@@ -45,7 +49,7 @@ class User:
             users_list = []
             get_users = self.user_sql.get_list_users()
             for value in get_users:
-                value['fechaNacimiento'] = str(value['fechaNacimiento'])
+                value['date_birth'] = str(value['date_birth'])
                 value.pop("password", None)
                 users_list.append(value)
             if users_list:

@@ -4,6 +4,8 @@
 """
 
 from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
+from src.app.core.permissions import has_permission
 from src.app.scheme.scheme import CreateUserSchema
 from src.app.module.user.user import User
 from src.app.core.auth_service import get_current_user
@@ -19,14 +21,24 @@ async def created_user(
         Endpoint to create a new user. 
         It receives the user data and returns the result of the creation process.
     """
-    user = User()
-    result = user.created_user(data)
-    return result
+    if has_permission(current_user["id"], "create_user"):
+        user = User()
+        result = user.created_user(data)
+        return result
+    return JSONResponse(
+            content="You do not have permission to perform this action.",
+            status_code=403
+        )
 
 @appUser.get("/get_users")
 async def get_users(
     current_user=Depends(get_current_user)
 ):
     """Endpoint to get all users. It returns a list of all users."""
-    user = User()
-    return user.get_users()
+    if has_permission(current_user["id"], "view_users"):
+        user = User()
+        return user.get_users()
+    return JSONResponse(
+            content="You do not have permission to perform this action.",
+            status_code=403
+        )

@@ -15,6 +15,6 @@ class SqlLogin:
         Queries the database for a user with the specified email and returns
         their password hash for authentication verification.
         """
-        sql = f"""SELECT password FROM usuario WHERE email = '{email}'"""
+        sql = f"""SELECT id, password FROM usuario WHERE email = '{email}'"""
         result = self.data_base.mysql_execute(sql, 'tienda_plus')
         return result

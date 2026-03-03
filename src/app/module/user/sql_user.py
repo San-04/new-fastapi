@@ -14,11 +14,13 @@ class SqlUser:
         
         Creates a new user entry in the usuario table with provided information.
         """
-        sql = f"""INSERT INTO usuario (nombre, apellido, email, password, edad)
-            VALUES ('{data['firstName']}', '{data['lastName']}', '{data['email']}',
-            '{data['password']}', '{data['age']}')
+        sql = f"""INSERT INTO usuario
+            (names, last_names, email, password, age, tele_phone, date_birth, role_id)
+            VALUES ('{data['firstName']}', '{data['lastName']}',
+            '{data['email']}', '{data['password']}', '{data['age']}',
+            '{data['mobile']}', '{data['dateBirth']}', {data['role_id']})
         """
-        result = self.data_base.msql_execute_insert(sql, 'tienda_plus',)
+        result = self.data_base.msql_execute_insert(sql, 'tienda_plus')
         return result
 
     def get_email_user(self, email):

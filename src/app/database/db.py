@@ -100,6 +100,7 @@ class Database:
             return True
         except mysql.connector.Error as e:
             # Log properly instead of print in production
+            traceback.print_exc()
             print(f"Database/msql_execute_insert: {e}")
             return False
         finally:
@@ -121,6 +122,7 @@ class Database:
             return True
         except mysql.connector.Error as e:
             # Log properly instead of print in production
+            traceback.print_exc()
             print(f"Database/msql_execute_update: {e}")
             return False
         finally:
@@ -143,6 +145,7 @@ class Database:
             return True
         except mysql.connector.Error as e:
             # Log properly instead of print in production
+            traceback.print_exc()
             print(f"Database/mysql_execute_delete: {e}")
             return False
         finally:

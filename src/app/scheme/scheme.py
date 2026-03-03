@@ -9,3 +9,6 @@ class CreateUserSchema(BaseModel):
     email: EmailStr
     password: str
     age: int
+    mobile: str
+    dateBirth: str
+    role_id: int

@@ -26,10 +26,11 @@ class Login:
             print("User data retrieved from database:", user_data)
             if not user_data:
                 return JSONResponse(content="User not found", status_code=401)
+            user_id = user_data[0]["id"]
             hashed_password = user_data[0]["password"]
             if not verify_password(form_data.password, hashed_password):
                 return JSONResponse(content="Incorrect password", status_code=401)
-            token = create_access_token({"sub": form_data.username})
+            token = create_access_token({"sub": form_data.username, "user_id": user_id})
             return JSONResponse(content={"access_token": token, "token_type": "bearer"}, status_code=200)
         except Exception as e:
             print("Error occurred during login:")
