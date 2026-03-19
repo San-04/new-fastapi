@@ -23,4 +23,5 @@ class UpdateUserSchema(BaseModel):
     age: int
     mobile: str
     dateBirth: str
+    status: int
     role_id: int

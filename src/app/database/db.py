@@ -118,7 +118,7 @@ class Database:
             conn = self.conexion(db)
             cur = conn.cursor()
             cur.execute(sql)
-            cur.commit()
+            conn.commit()
             return True
         except mysql.connector.Error as e:
             # Log properly instead of print in production

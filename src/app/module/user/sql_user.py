@@ -27,7 +27,7 @@ class SqlUser:
         """
         Check if a user with the given email exists in the database.
         """
-        sql = f"""SELECT email FROM usuario WHERE email = '{email}'"""
+        sql = f"""SELECT id FROM usuario WHERE email = '{email}'"""
         result = self.data_base.mysql_execute(sql, db="tienda_plus")
         return result
 
@@ -48,11 +48,12 @@ class SqlUser:
         """
         sql = f"""
             UPDATE usuario
-            SET names = '{data['firstName']}', 
-                last_names = '{data['lastName']}'
-                age = '{data['age']}'
-                tele_phone = '{data['date_birth']}'
-                status = '{data['status']}'
+            SET names = '{data['firstName']}',
+                last_names = '{data['lastName']}',
+                age = '{data['age']}',
+                tele_phone = '{data['mobile']}',
+                date_birth = '{data['dateBirth']}',
+                status = '{data['status']}',
                 role_id = '{data['role_id']}'
             WHERE id = '{data['id_user']}'
         """

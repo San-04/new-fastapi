@@ -21,9 +21,7 @@ class Login:
         and returns a JWT token if authentication is successful.
         """
         try:
-            print("Starting login process for user:", form_data.username)
             user_data = self.login_sql.get_email(form_data.username)
-            print("User data retrieved from database:", user_data)
             if not user_data:
                 return JSONResponse(content="User not found", status_code=401)
             user_id = user_data[0]["id"]
