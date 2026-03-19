@@ -41,3 +41,19 @@ class SqlUser:
         sql = """SELECT * FROM usuario"""
         result = self.data_base.mysql_execute_paginated(sql, db="tienda_plus")
         return result
+
+    def sql_update_user(self, data):
+        """
+            Updates a user's information 
+        """
+        sql = f"""
+            UPDATE usuario
+            SET names = '{data['firstName']}', 
+                last_names = '{data['lastName']}'
+                age = '{data['age']}'
+                tele_phone = '{data['date_birth']}'
+                status = '{data['status']}'
+                role_id = '{data['role_id']}'
+            WHERE id = '{data['id_user']}'
+        """
+        return self.data_base.msql_execute_update(sql, db="tienda_plus")

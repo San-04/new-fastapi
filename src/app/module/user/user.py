@@ -58,3 +58,29 @@ class User:
         except Exception as e:
             print("User/get_users: " + str(e))
             raise HTTPException(status_code=400, detail="Error Get Users") from e
+
+    def update_user(self, data):
+        """
+            Modify a user in the database
+
+            The user is identified by their email address to retrieve the database ID
+        """
+        try:
+            required = [
+                "firstName", "lastName", "email",
+                "age", "dateBirth", "role_id"
+            ]
+            if all(getattr(data, f) for f in required):
+                get_email = self.user_sql.get_email_user(data.email)
+                if get_email:
+                    data_user = data.dict()
+                    data_user['id_user'] = get_email['id']
+                    update_user = self.user_sql.sql_update_user(data_user)
+                    if not update_user:
+                        return JSONResponse(content="Error Update User", status_code=400)
+                    return JSONResponse(content="Update User", status_code=200)
+                return JSONResponse(content="Email Not Exist", status_code=200)
+            return JSONResponse(content="Missing Parameters", status_code=200)
+        except Exception as e:
+            print("Error Update user:" + str(e))
+            raise HTTPException(status_code=500, detail="Error Update User") from e
