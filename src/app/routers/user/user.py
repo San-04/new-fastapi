@@ -6,7 +6,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from src.app.core.permissions import has_permission
-from src.app.scheme.scheme import CreateUserSchema, UpdateUserSchema
+from src.app.scheme.scheme import CreateUserSchema, UpdateUserSchema, DeleteUserSchema
 from src.app.module.user.user import User
 from src.app.core.auth_service import get_current_user
 
@@ -56,6 +56,22 @@ async def update_user(
     if has_permission(current_user['id'], 'update_user'):
         user = User()
         return user.update_user(data)
+    return JSONResponse(
+            content="You do not have permission to perform this action.",
+            status_code=403
+        )
+
+@appUser.delete("/delete_user")
+async def delete_user(
+    data: DeleteUserSchema,
+    current_user = Depends(get_current_user)
+):
+    """
+        Endpoint for deleting users; returns the deleted user
+    """
+    if has_permission(current_user['id'], 'delete_user'):
+        user = User()
+        return user.delete_user(data.id)
     return JSONResponse(
             content="You do not have permission to perform this action.",
             status_code=403

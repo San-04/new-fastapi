@@ -58,3 +58,13 @@ class SqlUser:
             WHERE id = '{data['id_user']}'
         """
         return self.data_base.msql_execute_update(sql, db="tienda_plus")
+
+    def sql_delete_user(self, user_id):
+        """
+            Deletes a user from the database
+        """
+        sql = f"""
+            DELETE FROM usuario
+            WHERE id = '{user_id}'
+        """
+        return self.data_base.mysql_execute_delete(sql, db="tienda_plus")

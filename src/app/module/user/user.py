@@ -86,3 +86,17 @@ class User:
             print("Error Update user:" + str(e))
             traceback.print_exc()
             raise HTTPException(status_code=500, detail="Error Update User") from e
+
+    def delete_user(self, user_id):
+        """
+            Delete a user from the database
+        """
+        try:
+            delete_user = self.user_sql.sql_delete_user(user_id)
+            if not delete_user:
+                return JSONResponse(content="User Could Not Deleted", status_code=400)
+            return JSONResponse(content="Delete User", status_code=200)
+        except Exception as e:
+            print("Error Delete user:" + str(e))
+            traceback.print_exc()
+            raise HTTPException(status_code=500, detail="Error Delete User") from e

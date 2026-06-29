@@ -137,11 +137,13 @@ class Database:
         
         Deletes one or more rows from a table and commits the transaction.
         """
+        conn = None
+        cur = None
         try:
             conn = self.conexion(db)
             cur = conn.cursor()
             cur.execute(sql)
-            cur.commit()
+            conn.commit()
             return True
         except mysql.connector.Error as e:
             # Log properly instead of print in production
